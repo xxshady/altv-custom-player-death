@@ -2,7 +2,7 @@ import alt from "alt-client"
 import native from "natives"
 import { PLAYER_FACIAL_ANIM_SYNC_KEY } from "../shared"
 
-const playersActiveFacialAnim = new Map()
+const playersActiveFacialAnim = new WeakMap()
 
 new alt.Utils.EveryTick(() => {
   for (const [player, [animName, animDict]] of playersActiveFacialAnim) {
