@@ -50,7 +50,7 @@ const startDeath = () => {
   })
 
   // making player invincible so he cant be *really* killed
-  // though playerDeath listener would not be redundant for edge cases
+  // though playerDeath listener on the serverside would not be redundant for edge cases
   // (we don't use serverside setter because it sets invincibility without dead body reactions)
   native.setPlayerInvincibleButHasReactions(LOCAL_PLAYER, true)
 
