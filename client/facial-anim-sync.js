@@ -26,7 +26,9 @@ const playFacialAnim = async (player, anim) => {
 alt.on("streamSyncedMetaChange", (player, key, anim) => {
   if (key !== PLAYER_FACIAL_ANIM_SYNC_KEY) return
   if (!(player instanceof alt.Player)) return
-  if (!(player.isSpawned)) return // altv stream synced meta bug workaround
+  
+  // altv stream synced meta bug workaround https://github.com/altmp/altv-issues/issues/1398
+  if (!(player.isSpawned)) return
 
   if (!anim) {
     alt.log("clear facial anim of player:", player.id)

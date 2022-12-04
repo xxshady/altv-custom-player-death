@@ -5,6 +5,7 @@ alt.on("playerConnect", (player) => {
   alt.log("playerConnect", player.name)
 
   // altv bug workaround
+  // https://github.com/altmp/altv-issues/issues/1046
   player.dimension = player.id
   setTimeout(() => {
     spawnPlayer(player)
