@@ -2,7 +2,7 @@ import alt from "alt-client"
 import native from "natives"
 import { PLAYER_FACIAL_ANIM_SYNC_KEY } from "../shared"
 
-const playersActiveFacialAnim = new WeakMap()
+const playersActiveFacialAnim = new Map()
 
 new alt.Utils.EveryTick(() => {
   for (const [player, [animName, animDict]] of playersActiveFacialAnim) {
@@ -17,8 +17,9 @@ const playFacialAnim = async (player, anim) => {
   const [animName, animDict] = anim
 
   await alt.Utils.requestAnimDict(animDict)
+
   // async shit validation
-  if (player.getStreamSyncedMeta(PLAYER_FACIAL_ANIM_SYNC_KEY)?.[0] !== animName) return
+  if (!(player.valid && player.getStreamSyncedMeta(PLAYER_FACIAL_ANIM_SYNC_KEY)?.[0] === animName)) return
 
   playersActiveFacialAnim.set(player, anim)
 }
