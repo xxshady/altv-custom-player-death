@@ -14,6 +14,9 @@ const PLAYER_MIN_HEALTH = PLAYER_MAX_HEALTH - 100
 const SPAWN_POS = new alt.Vector3(0, 0, 72)
 
 alt.on("playerDamage", (player) => {
+  // if player is dead we don't care about damage
+  if (player.customDead) return
+
   // health value that is clamped between 0-100
   player.customHealth = clamp((player.health - PLAYER_MIN_HEALTH), 0, 100)
   player.setStreamSyncedMeta(PLAYER_CUSTOM_HEALTH_SYNC_KEY, player.customHealth)
@@ -22,9 +25,6 @@ alt.on("playerDamage", (player) => {
 
   // now we can work with 0-100 health value and check if it is still alive
   if (player.customHealth > 0) return
-
-  // player is dead now, we don't care about damage now
-  if (player.customDead) return
   player.customDead = true
 
   alt.log("player death")
