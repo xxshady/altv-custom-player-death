@@ -47,6 +47,11 @@ const startDeath = () => {
   deathTick = new alt.Utils.EveryTick(() => {
     native.resetPedRagdollTimer(LOCAL_PLAYER)
     native.setPedToRagdoll(LOCAL_PLAYER, -1, -1, 0, false, false, true)
+
+    // TODO: find a way to throw the player out of the vehicle
+    // temp shit-fix for death in closed vehicle
+    if (LOCAL_PLAYER.vehicle)
+      native.taskLeaveAnyVehicle(LOCAL_PLAYER, 0, 256) // don't close the vehicle door
   })
 
   // making player invincible so he cant be *really* killed
