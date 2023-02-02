@@ -33,7 +33,9 @@ const hideHealthAndArmourBars = () => {
   native.scaleformMovieMethodAddParamInt(3)
   native.endScaleformMovieMethod()
 }
-hideHealthAndArmourBars()
+// making sure health and armour bars under minimap are always hidden
+// (e.g. it can reset after opening and closing pause menu)
+alt.setInterval(hideHealthAndArmourBars, 300)
 
 // custom health ""bars""
 new alt.Utils.EveryTick(() => {

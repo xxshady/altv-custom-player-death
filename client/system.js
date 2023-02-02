@@ -2,9 +2,9 @@ import alt from "alt-client"
 import native from "natives"
 import { PLAYER_CUSTOM_HEALTH_SYNC_KEY } from "../shared"
 import { shuffleArray } from "./helpers"
-import './facial-anim-sync'
-
-const LOCAL_PLAYER = alt.Player.local
+import { LOCAL_PLAYER } from "./constants"
+import "./facial-anim-sync"
+import "./damage-ragdoll"
 
 const BLOOD_DAMAGE_PACKS = [
   "Explosion_Med", "BigHitByVehicle", "SCR_Torture",
@@ -29,20 +29,11 @@ export const stopDeath = () => {
 }
 
 const startDeath = () => {
-  alt.log("playerDeathStart")
+  // alt.log("playerDeathStart")
 
   shuffleArray(BLOOD_DAMAGE_PACKS)
     .slice(0, 3)
     .forEach(e => native.applyPedDamagePack(LOCAL_PLAYER, e, 100.0, 1.0))
-
-  native.applyForceToEntity(
-    LOCAL_PLAYER,
-    1,
-    0, 0, -3.0,
-    0, 0, 0,
-    0,
-    false, true, true, true, true,
-  )
 
   deathTick = new alt.Utils.EveryTick(() => {
     native.resetPedRagdollTimer(LOCAL_PLAYER)
@@ -72,7 +63,6 @@ alt.onServer("playerDeathStart", startDeath)
 //   if (!(player.isSpawned)) return // altv stream synced meta bug workaround
 //   if (value > 0) return
 
-//   // TODO: TEST
 //   alt.log("force fall player:", player.name)
 //   alt.everyTick(() => {
 //     native.setPedCanRagdoll(player, true)

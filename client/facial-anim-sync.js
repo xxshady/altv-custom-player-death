@@ -12,7 +12,7 @@ new alt.Utils.EveryTick(() => {
 })
 
 const playFacialAnim = async (player, anim) => {
-  alt.log("play player facial anim of player", player.id)
+  // alt.log("play player facial anim of player", player.id)
 
   const [animName, animDict] = anim
 
@@ -32,7 +32,7 @@ alt.on("streamSyncedMetaChange", (player, key, anim) => {
   if (!(player.isSpawned)) return
 
   if (!anim) {
-    alt.log("clear facial anim of player:", player.id)
+    // alt.log("clear facial anim of player:", player.id)
     playersActiveFacialAnim.delete(player)
     return
   }

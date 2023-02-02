@@ -4,12 +4,15 @@ import {
   PLAYER_MALE_MODEL
 } from "../shared"
 import { togglePlayerDeadFacialAnim } from "./facial-anim-sync"
-import './facial-anim-sync'
+import "./facial-anim-sync"
+import "./damage-ragdoll"
 
+// by default player health is 0-100, but can be increased
+const PLAYER_MAX_HEALTH = 100
 // our real health value will be from 7900 to 8000
 // if player.health becomes less than 7900 we mark player as "dead"
-const PLAYER_MAX_HEALTH = 8000
-const PLAYER_MIN_HEALTH = PLAYER_MAX_HEALTH - 100
+const INTERNAL_PLAYER_MAX_HEALTH = 8000
+const INTERNAL_PLAYER_MIN_HEALTH = INTERNAL_PLAYER_MAX_HEALTH - PLAYER_MAX_HEALTH
 
 const SPAWN_POS = new alt.Vector3(0, 0, 72)
 
@@ -17,13 +20,13 @@ alt.on("playerDamage", (player) => {
   // if player is dead we don't care about damage
   if (player.customDead) return
 
-  // health value that is clamped between 0-100
-  player.customHealth = clamp((player.health - PLAYER_MIN_HEALTH), 0, 100)
+  // health value that is clamped between 0-PLAYER_MAX_HEALTH
+  player.customHealth = clamp((player.health - INTERNAL_PLAYER_MIN_HEALTH), 0, PLAYER_MAX_HEALTH)
   player.setStreamSyncedMeta(PLAYER_CUSTOM_HEALTH_SYNC_KEY, player.customHealth)
 
-  alt.log("playerDamage", player.name, player.id, "customHealth:", player.customHealth)
+  // alt.log("playerDamage", player.name, player.id, "customHealth:", player.customHealth)
 
-  // now we can work with 0-100 health value and check if it is still alive
+  // now we can work with 0-PLAYER_MAX_HEALTH health value and check if it is still alive
   if (player.customHealth > 0) return
   player.customDead = true
 
@@ -55,8 +58,8 @@ export const spawnPlayer = (
   player.spawn(model, pos)
 
   // setting high health to prevent player from *really* killing themselves
-  player.maxHealth = PLAYER_MAX_HEALTH
-  player.health = PLAYER_MAX_HEALTH
-  player.customHealth = 100
-  player.setStreamSyncedMeta(PLAYER_CUSTOM_HEALTH_SYNC_KEY, 100)
+  player.maxHealth = INTERNAL_PLAYER_MAX_HEALTH
+  player.health = INTERNAL_PLAYER_MAX_HEALTH
+  player.customHealth = PLAYER_MAX_HEALTH
+  player.setStreamSyncedMeta(PLAYER_CUSTOM_HEALTH_SYNC_KEY, PLAYER_MAX_HEALTH)
 }
