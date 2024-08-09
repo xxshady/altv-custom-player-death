@@ -1,6 +1,6 @@
 import alt from "alt-client"
 import native from "natives"
-import { getPlayerCustomHealth, stopDeath } from "./system"
+import { getPlayerCustomHealth } from "./system.js"
 
 const LOCAL_PLAYER = alt.Player.local
 
@@ -11,7 +11,6 @@ const deathEnd = () => {
   deathControllers.forEach(e => e.destroy())
   deathControllers = []
 
-  stopDeath()
   alt.emitServerRaw("respawnPlayer")
 }
 
@@ -42,6 +41,12 @@ new alt.Utils.EveryTick(() => {
   alt.Utils.drawText2dThisFrame(
     `health: ~g~${getPlayerCustomHealth(LOCAL_PLAYER)}`,
     { x: 0.5, y: 0.95 },
+    // GameFont.Pricedown
+    7,
+  )
+  alt.Utils.drawText2dThisFrame(
+    `h: ~g~${LOCAL_PLAYER.health}`,
+    { x: 0.5, y: 0.8 },
     // GameFont.Pricedown
     7,
   )

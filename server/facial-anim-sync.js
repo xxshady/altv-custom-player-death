@@ -1,8 +1,7 @@
-import alt from "alt-server"
 import {
   PLAYER_FACIAL_ANIM_SYNC_KEY, 
   PLAYER_MALE_MODEL
-} from "../shared"
+} from "../shared.js"
 
 const DEAD_FACIAL_ANIMS = {
   male: {

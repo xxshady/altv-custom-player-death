@@ -1,0 +1,4 @@
+type = 'js'
+main = 'server/usage-example.js'
+client-main = 'client/usage-example.js'
+client-files = ['client/*', 'shared.js']

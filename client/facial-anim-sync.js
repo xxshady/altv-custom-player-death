@@ -1,6 +1,6 @@
 import alt from "alt-client"
 import native from "natives"
-import { PLAYER_FACIAL_ANIM_SYNC_KEY } from "../shared"
+import { PLAYER_FACIAL_ANIM_SYNC_KEY } from "../shared.js"
 
 const playersActiveFacialAnim = new Map()
 

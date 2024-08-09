@@ -1,8 +1,10 @@
 import alt from "alt-server"
-import { spawnPlayer } from "./system"
+import { spawnPlayer, events } from "./system.js"
 
 alt.on("playerConnect", (player) => {
   alt.log("playerConnect", player.name)
+  player.spawn("mp_m_freemode_01", new alt.Vector3(0, 0, 70));
+  spawnPlayer(player)
 })
 
 alt.onClient("respawnPlayer", (player) => {
@@ -13,5 +15,10 @@ alt.onClient("respawnPlayer", (player) => {
 
   alt.log("respawnPlayer", player.name)
 
-  spawnPlayer(player, player.model)
+  spawnPlayer(player)
 })
+
+// player, killer or null, weapon or null
+events.onDeath = (player, killer, weapon) => {
+  alt.log('onDeath', player.name, killer?.name, weapon);
+}

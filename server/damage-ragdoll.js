@@ -83,20 +83,24 @@ alt.on("weaponDamage", (attacker, player, _1, _2, _3, bodyPart) => {
   if (player.customDead) return
 
   const boneId = PED_BONE_BY_BODY_PART[bodyPart]
-  if (boneId != null) {
+  if (boneId == null) return
 
-    let forceOffset
-    let ragdollTime
-    if (bodyPart === BodyPart.Head) {
-      const mul = Math.random() * 40 + 50
-      forceOffset = player.pos.sub(attacker.pos).mul(mul)
-      ragdollTime = 3000
-    }
-    else {
-      forceOffset = null
-      ragdollTime = 300
-    }
-    
-    player.emit("playerDamageRagdoll", forceOffset, boneId, ragdollTime)
+  let forceOffset
+  let ragdollTime
+  if (bodyPart === BodyPart.Head) {
+    const mul = Math.random() * 40 + 50
+
+    forceOffset = player.pos
+      // TODO: re-check this
+      .sub(attacker.pos)
+      .mul(mul)
+
+    ragdollTime = 3000
   }
+  else {
+    forceOffset = null
+    ragdollTime = 300
+  }
+  
+  player.emit("playerDamageRagdoll", forceOffset, boneId, ragdollTime)
 })

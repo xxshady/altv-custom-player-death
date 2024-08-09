@@ -1,6 +1,6 @@
 import alt from "alt-client"
 import native from "natives"
-import { LOCAL_PLAYER } from "./constants"
+import { LOCAL_PLAYER } from "./constants.js"
 
 alt.onServer("playerDamageRagdoll", (forceOffset, boneId, ragdollTime) => {
   // alt.log("playerDamageRagdoll", forceOffset, boneId, ragdollTime)

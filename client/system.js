@@ -1,10 +1,10 @@
 import alt from "alt-client"
 import native from "natives"
-import { PLAYER_CUSTOM_HEALTH_SYNC_KEY } from "../shared"
-import { shuffleArray } from "./helpers"
-import { LOCAL_PLAYER } from "./constants"
-import "./facial-anim-sync"
-import "./damage-ragdoll"
+import { PLAYER_CUSTOM_HEALTH_SYNC_KEY } from "../shared.js"
+import { shuffleArray } from "./helpers.js"
+import { LOCAL_PLAYER } from "./constants.js"
+import "./facial-anim-sync.js"
+import "./damage-ragdoll.js"
 
 const BLOOD_DAMAGE_PACKS = [
   "Explosion_Med", "BigHitByVehicle", "SCR_Torture",
@@ -21,23 +21,30 @@ alt.everyTick(() => {
 let deathTick = null
 
 // for external usage
-export const stopDeath = () => {
+const stopDeath = () => {
   deathTick?.destroy()
   deathTick = null
 
   native.setPlayerInvincibleButHasReactions(LOCAL_PLAYER, false)
+  for (let i = 0; i <= 6; ++i) {
+    native.clearPedDamageDecalByZone(LOCAL_PLAYER, i, "ALL")
+  }
 }
 
 const startDeath = () => {
   // alt.log("playerDeathStart")
 
-  shuffleArray(BLOOD_DAMAGE_PACKS)
-    .slice(0, 3)
-    .forEach(e => native.applyPedDamagePack(LOCAL_PLAYER, e, 100.0, 1.0))
+  if (!native.isEntityInWater(LOCAL_PLAYER)) {
+    // TEST
+    // shuffleArray(BLOOD_DAMAGE_PACKS)
+    BLOOD_DAMAGE_PACKS
+      // .slice(0, 3)
+      .forEach(e => native.applyPedDamagePack(LOCAL_PLAYER, e, 100.0, 1.0))
+  }
 
   deathTick = new alt.Utils.EveryTick(() => {
     native.resetPedRagdollTimer(LOCAL_PLAYER)
-    native.setPedToRagdoll(LOCAL_PLAYER, -1, -1, 0, false, false, true)
+    native.setPedToRagdoll(LOCAL_PLAYER, 500, 500, 0, false, false, false)
 
     // TODO: find a way to throw the player out of the vehicle
     // temp shit-fix for death in closed vehicle
@@ -52,7 +59,9 @@ const startDeath = () => {
 
   alt.emit("customPlayerDeath")
 }
+
 alt.onServer("playerDeathStart", startDeath)
+alt.onServer("playerDeathStop", stopDeath)
 
 // TODO: fix death ragdoll of remote player ped from high fall
 // // force ragdoll on remote player death
