@@ -20,7 +20,6 @@ alt.everyTick(() => {
 
 let deathTick = null
 
-// for external usage
 const stopDeath = () => {
   deathTick?.destroy()
   deathTick = null
@@ -35,10 +34,8 @@ const startDeath = () => {
   // alt.log("playerDeathStart")
 
   if (!native.isEntityInWater(LOCAL_PLAYER)) {
-    // TEST
-    // shuffleArray(BLOOD_DAMAGE_PACKS)
-    BLOOD_DAMAGE_PACKS
-      // .slice(0, 3)
+    shuffleArray(BLOOD_DAMAGE_PACKS)
+      .slice(0, 3)
       .forEach(e => native.applyPedDamagePack(LOCAL_PLAYER, e, 100.0, 1.0))
   }
 
